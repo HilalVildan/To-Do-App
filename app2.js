@@ -36,7 +36,7 @@ ekleButon.onclick = function () {
         total -= 1;
         toplam.textContent = total;
 
-        if (completed > 1) {
+        if (completed > 0) {
           completed -= 1;
           yapildi.textContent = completed;
         }
