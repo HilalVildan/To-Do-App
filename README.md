@@ -22,4 +22,4 @@ to-do-app-gz99.vercel.app
 
 ## Project image
 ​
-![proje image](/Users/hilalvildansarioglu/Desktop/PROJECTS/To-Do-App/Ekran Resmi 2022-09-27 14.26.00.png)
+![proje image](/Ekran%20Resmi%202022-09-27%2014.26.00.png)
