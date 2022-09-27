@@ -1,6 +1,6 @@
 # Project : To-Do-App
 ​
-`<to-do-app-gz99.vercel.app>`
+https://to-do-app-gz99.vercel.app/
 
 ## Description
 ​
@@ -21,4 +21,4 @@ ToDo List App is a kind of app that generally used to maintain our day-to-day ta
 
 ## Project clone link
 ​
-`<https://github.com/HilalVildan/To-Do-App.git>`
+https://github.com/HilalVildan/To-Do-App.git
