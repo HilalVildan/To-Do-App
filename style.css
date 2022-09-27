@@ -118,7 +118,7 @@ li p {
   margin-left: 3px;
 }
 /* li checked class ı varsa spane olacaklar altta yazıyor*/
-li.checked > span {
+li.checked > p {
   color: rgb(41, 41, 41);
   text-decoration: line-through;
   font-weight: normal;
