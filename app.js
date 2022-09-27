@@ -1,85 +1,112 @@
-const girdi = document.querySelector("#todo-input");
-const ekleButon = document.querySelector("#todo-button");
-const toplam = document.querySelector("#toplam");
-const yapildi = document.querySelector("#tamamlanan");
-// const check = document.querySelectorAll(".fa-check");
-// const sil = document.querySelectorAll(".fa-trash");
 let liste = [];
-let index = 0;
+
 let total = 0;
-let clicked = false;
+
 let completed = 0;
-const todoList = document.querySelector("#todo-ul");
 
-ekleButon.addEventListener("click", () => {
-  listeGöster();
-  girdi.value = "";
-});
+const listeInput = document.querySelector("#todo-input");
+const listeUl = document.querySelector("#todo-ul");
+const listeButon = document.querySelector("#todo-button");
+const toplam = document.querySelector("#toplam");
 
-const listeGöster = () => {
-  liste.push([girdi.value, index, clicked]);
+//!Add butonuna basıldığında
 
-  todoList.innerHTML = ``;
+listeButon.onclick = () => {
+  if (!listeInput.value) {
+    alert("lütfen bir not giriniz");
+  }
+  //! input a girilen veri (Add e basınca) daha önce listeye girildiyse, tekrar girilmesin, boş dön
+  else if (liste.includes(listeInput.value)) {
+    return;
+  } else {
+    liste.push(listeInput.value);
+    total += 1;
+    console.log(liste);
+    //!ekranda listeyi göster
+    showListe();
+    listeInput.value = "";
+  }
+};
+const showListe = () => {
+  listeUl.innerHTML += `<li class="ayse">
+<i class="fa fa-check fa-lg"></i>
+ <p>${listeInput.value}</p>
 
-  liste.forEach((element) => {
-    todoList.innerHTML += `
-        <li>
-        <i value=${element[1]} class="fa-solid fa-check"></i>
-        <span class="yazi" value=${element[1]} >${element[0]}</span> 
-        <i value=${element[1]} class="fa-solid fa-trash"></i>
-        </li>`;
+<i class="fa fa-trash fa-lg"></i>
+</li>`;
 
-    const check = document
-      .querySelectorAll(".fa-check")
-      .forEach((elementCheck) => {
-        elementCheck.onclick = () => {
-          let valueCheck = elementCheck.getAttribute("value");
-          // console.log(liste[valueCheck]);
-          elementCheck.style.color = "green";
+  //! 2.yazım
+  {
+    /* <p>${liste[liste.length - 1]}</p>; */
+  }
 
-          document.querySelectorAll(".yazi")[valueCheck].style.textDecoration =
-            "line-through";
-
-          // console.log(document.querySelectorAll(".yazi")[valueCheck]);
-
-          completed += 1;
-          yapildi.textContent = completed;
-        };
-      });
-    const sil = document.querySelectorAll(".fa-trash").forEach((elementSil) => {
-      elementSil.onclick = () => {
-        let valueSil = elementSil.getAttribute("value");
-
-        for (let index = 0; index < sil.length; index++) {
-          if (liste[index][1] == valueSil) {
-            liste.splice(index, 1);
-            console.log(document.querySelectorAll("li"));
-
-            document.querySelectorAll("li")[valueSil].innerHTML = ``;
-
-            console.log(liste, "liste");
-            console.log(valueSil);
-            
-          }
-        }
-
-        // const liList = document.querySelectorAll(".li-liste");
-
-        //console.log(liste,valueSil);
-
-        total -= 1;
-        toplam.textContent = total;
-
-       if (completed > 1) {
-          completed -= 1;
-          yapildi.textContent = completed; 
-        }
-      };
-    });
-  });
-  total += 1;
   toplam.textContent = total;
 
-  index += 1;
-  console.log(liste);
+  //!her li girişinde cursor inputun içinde olsun
+  listeInput.focus();
+
+  //!silme
+  createSilButon();
+  //!check
+  createCheckButon();
+};
+
+const createSilButon = () => {
+  //! listedeki bütün fa-trash iconlarına ulaş
+
+  document.querySelectorAll(".fa-trash").forEach((a) => {
+    a.onclick = () => {
+      //!ekrandan eleman silerken bize gelen ilk fa-trash listesine göre index aldığı için, 2. ve 3. silmelerde index aynı kaldığı için problem yaşayabiliriz. bunun çözümü alttaki gibi,ekranda tıklanan fa-trash ın üstündeki (listeden silinmesini istediğim eleman üstünde old için) elemanın içeriğinin index ini alıp, diziden o index le silme yapıyoruz
+      const silinecekIndis = liste.indexOf(
+        a.previousElementSibling.textContent
+      );
+
+      liste.splice(silinecekIndis, 1);
+
+      a.parentElement.remove();
+
+      // console.log(liste);
+      total = total - 1;
+      toplam.textContent = total;
+
+      if (completed > 0 && a.parentElement.classList.contains("checked")) {
+        completed = completed - 1;
+        document.querySelector("#tamamlanan").textContent = completed;
+      }
+    };
+  });
+};
+
+// !! classList ve className sonuç istendiğinde aynı sonucu verir tek farkla; classList bir liste, className bir isim şeklinde verir. bunun tek dezavantajı, zaten class ı olan bir elemana className="örnek" şeklinde eleman atamak istersek, varolan elemanları silip sadece örnek class ı nı atar. classList ile toggle ve contains kullanmalıyız, className ile toggle kullanamıyoruz contains yerine includes kullanmalıyız, javascriptte includes tercih edilir
+
+const createCheckButon = () => {
+  //!1.yol
+  // document.querySelectorAll(".fa-check").forEach((a) => {
+  //   a.onclick = () => {
+  //     if (a.parentElement.classList.contains("checked")) {
+
+  //       a.parentElement.classList.remove("checked");
+
+  //       completed = completed - 1;
+
+  //     } else {
+  //       a.parentElement.classList.add("checked");
+  //       completed = completed + 1;
+  //     }
+  //     document.querySelector("#tamamlanan").textContent = completed;
+  //   };
+  // });
+  //!2.yol
+  //! Target özelliği, her zaman olay dinleyicisinin olayı tetiklediği öğeye başvuran currentTarget özelliğinin aksine, olayın orjinal olarak gerçekleştiği öğeyi alır .
+  document.querySelector(".fa-check").onclick = (a) => {
+    if (a.target.parentElement.classList.contains("checked")) {
+      a.target.parentElement.classList.remove("checked");
+
+      completed = completed - 1;
+    } else {
+      a.target.parentElement.classList.add("checked");
+      completed = completed + 1;
+    }
+    document.querySelector("#tamamlanan").textContent = completed;
+  };
 };
