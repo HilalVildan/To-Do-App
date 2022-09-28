@@ -1,4 +1,5 @@
-let liste = JSON.parse(localStorage.getItem("liste")) ?? [];
+//!burada liste adında, local de LISTE adında boş bir liste oluştur, listenin içi doluysa dolu listeyi getir
+let liste = JSON.parse(localStorage.getItem("LISTE")) ?? [];
 
 let total = 0;
 
@@ -18,7 +19,10 @@ listeButon.onclick = () => {
     return;
   } else {
     liste.push(listeInput.value);
-    localStorage.setItem("liste", JSON.stringify(liste));
+
+    //!liste ye eleman eklenince  localStorage deki LISTE yi güncelle
+    localStorage.setItem("LISTE", JSON.stringify(liste));
+
     total += 1;
     console.log(liste);
     //!ekranda listeyi göster
@@ -31,6 +35,7 @@ const showListe = () => {
 <i class="fa fa-check fa-lg"></i>
  <p>${listeInput.value}</p>
 
+ 
 <i class="fa fa-trash fa-lg"></i>
 </li>`;
 
@@ -54,8 +59,9 @@ const createSilButon = () => {
       liste.splice(silinecekIndis, 1);
 
       a.parentElement.remove();
+      //!listeden eleman silinince localStorage deki LISTE yi güncelle
+      localStorage.setItem("LISTE", JSON.stringify(liste));
 
-      // console.log(liste);
       total = total - 1;
       toplam.textContent = total;
 
