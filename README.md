@@ -8,7 +8,7 @@ ToDo List App is a kind of app that generally used to maintain our day-to-day ta
 ​
 ## Project GIF
 ​
-![proje image](/AnyConv.com__MTVideo.gif)
+![proje image](/MTVideo2.gif)
 
 ## Technologies used
 ​
