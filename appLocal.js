@@ -1,39 +1,39 @@
-//!burada liste adında, local de LISTE adında boş bir liste oluştur, listenin içi doluysa dolu listeyi getir
-let liste = JSON.parse(localStorage.getItem("LISTE")) ?? [];
+//!burada list adında, local de list adında boş bir list oluştur, listnin içi doluysa dolu listyi getir
+let list = JSON.parse(localStorage.getItem("list")) ?? [];
 
 let total = 0;
 
 let completed = 0;
 
-const listeInput = document.querySelector("#todo-input");
-const listeUl = document.querySelector("#todo-ul");
-const listeButon = document.querySelector("#todo-button");
+const listInput = document.querySelector("#todo-input");
+const listUl = document.querySelector("#todo-ul");
+const listButon = document.querySelector("#todo-button");
 const toplam = document.querySelector("#toplam");
 
 //!Add butonuna basıldığında
 
-listeButon.onclick = () => {
-  if (!listeInput.value) {
+listButon.onclick = () => {
+  if (!listInput.value) {
     alert("lütfen bir not giriniz");
-  } else if (liste.includes(listeInput.value)) {
+  } else if (list.includes(listInput.value)) {
     return;
   } else {
-    liste.push(listeInput.value);
+    list.push(listInput.value);
 
-    //!liste ye eleman eklenince  localStorage deki LISTE yi güncelle
-    localStorage.setItem("LISTE", JSON.stringify(liste));
+    //!list ye eleman eklenince  localStorage deki list yi güncelle
+    localStorage.setItem("list", JSON.stringify(list));
 
     total += 1;
-    console.log(liste);
-    //!ekranda listeyi göster
-    showListe();
-    listeInput.value = "";
+    console.log(list);
+    //!ekranda listyi göster
+    showlist();
+    listInput.value = "";
   }
 };
-const showListe = () => {
-  listeUl.innerHTML += `<li class="ayse">
+const showlist = () => {
+  listUl.innerHTML += `<li class="ayse">
 <i class="fa fa-check fa-lg"></i>
- <p>${listeInput.value}</p>
+ <p>${listInput.value}</p>
 
  
 <i class="fa fa-trash fa-lg"></i>
@@ -41,33 +41,31 @@ const showListe = () => {
 
   toplam.textContent = total;
 
-  listeInput.focus();
+  listInput.focus();
 
   //!silme
-  createSilButon();
+  createDeleteButon();
   //!check
   createCheckButon();
 };
 
-const createSilButon = () => {
+const createDeleteButon = () => {
   document.querySelectorAll(".fa-trash").forEach((a) => {
     a.onclick = () => {
-      const silinecekIndis = liste.indexOf(
-        a.previousElementSibling.textContent
-      );
+      const silinecekIndis = list.indexOf(a.previousElementSibling.textContent);
 
-      liste.splice(silinecekIndis, 1);
+      list.splice(silinecekIndis, 1);
 
       a.parentElement.remove();
-      //!listeden eleman silinince localStorage deki LISTE yi güncelle
-      localStorage.setItem("LISTE", JSON.stringify(liste));
+      //!listden eleman silinince localStorage deki list yi güncelle
+      localStorage.setItem("list", JSON.stringify(list));
 
       total = total - 1;
       toplam.textContent = total;
 
       if (completed > 0 && a.parentElement.classList.contains("checked")) {
         completed = completed - 1;
-        document.querySelector("#tamamlanan").textContent = completed;
+        document.querySelector("#is-done").textContent = completed;
       }
     };
   });
@@ -85,7 +83,7 @@ const createCheckButon = () => {
         a.parentElement.classList.add("checked");
         completed = completed + 1;
       }
-      document.querySelector("#tamamlanan").textContent = completed;
+      document.querySelector("#is-done").textContent = completed;
     };
   });
 };
